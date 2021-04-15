@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:IntroToMVVM.ViewModels"
+             x:Class="IntroToMVVM.Views.ToDoList">
+
+    <!--Bind ViewModel to View-->
+    <ContentPage.BindingContext>
+        <local:ToDoListViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry 
+                x:Name="TxtInputField"
+                Text="{Binding NewToDoText}"
+                Placeholder="Enter a todo here"
+                ReturnCommand="{Binding AddToDoCommand}"
+                />
+
+            <!--Bind collection in ViewModel to this ListView-->
+            <ListView x:Name="ListToDo"
+                      ItemsSource="{Binding ToDoItems}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <!--Foreach item in List-->
+                            <StackLayout Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsCompleted}"/>
+                                <Label Text="{Binding Text}"
+                                       FontSize="Large"/>
+
+                                <ImageButton 
+                                        Command="{Binding Path=BindingContext.DeleteCommand, Source=x:Reference TodoList}"
+                                        CommandParameter="{Binding .}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
